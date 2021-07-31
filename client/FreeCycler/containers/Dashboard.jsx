@@ -1,20 +1,18 @@
-import React from 'react';
-import {
-  Text, View, Button,
-} from 'react-native';
+import React, { useEffect } from 'react';
+import { Text, View, Button } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadPiles } from '../services/ApiService';
+
 // import { ScrollView, FlatList } from 'react-native-gesture-handler';
-// import { useSelector } from 'react-redux';
-// import PileCard from '';
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flexDirection: 'column',
-//     marginHorizontal: 10,
-//     flex: 6,
-//   },
-// });
+const Dashboard = (props) => {
+  const piles = useSelector((state) => state.piles);
+  const dispatch = useDispatch();
 
-const Dashboard = (props) => (
+  useEffect(() => {
+    dispatch(loadPiles());
+  }, []);
+
   // const piles = useSelector((state) => state.piles.piles);
   // return (
   // <ScrollView style={styles.container}>
@@ -51,41 +49,22 @@ const Dashboard = (props) => (
   //     )}
   //   />
   // </ScrollView>
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>Dashboard!</Text>
-    <Button
-      title="Go to Detail"
-      onPress={() => props.navigation.navigate('PileDetail')}
-    />
-  </View>
-  // );
-);
+
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Dashboard!</Text>
+
+      <View>
+        <Text>{JSON.stringify(piles[0], null, 2)}</Text>
+      </View>
+
+      <Button
+        title="Go to Detail"
+        onPress={() => props.navigation.navigate('PileDetail')}
+      />
+
+    </View>
+  );
+};
 
 export default Dashboard;
-
-// import React from 'react';
-// import { View, Text, StyleSheet, Button } from "react-native";
-
-// const styles = StyleSheet.create({
-//     screen: {
-//       justifyContent: "center",
-//       alignItems: "center",
-//       flex: 1,
-//     },
-//     button: {
-//       marginVertical: 10,
-//       paddingHorizontal: 20,
-//       paddingVertical: 10,
-
-//     }
-//   });
-
-// export const Dashboard = ({navigation}) => (
-// <View style={styles.screen}>
-//     <Text>Freecycling opportunities in your area!</Text>
-//         <Button
-//         title="Add Pile"
-//         onPress={() => navigation.navigate("AddPileStart")}
-//         />
-// </View>
-// );
