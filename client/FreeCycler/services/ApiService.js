@@ -36,8 +36,43 @@ export const loadPiles = () => async (dispatch) => {
   }
 };
 
-// const getPiles = () => fetch(`${url}`)
-//   .then((res) => res.json())
-//   .catch((err) => {
-//     console.err(err);
-//   });
+// ----------------end of thunks ------------------
+
+export const getLonLat = async (address) => {
+  const encodedAddress = encodeURI(address);
+  let lonLat;
+  try {
+    lonLat = await fetch(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodedAddress}&inputtype=textquery&key=AIzaSyBZ6MJ6FdK2jdxooX3Eogsd_GD6njPWtu8&fields=geometry`)
+      .then((res) => res.json());
+    console.log(lonLat.candidates[0].geometry.location);
+  } catch (e) {
+    console.err(e);
+  }
+  // to get only the lon and lat as an object
+  return lonLat.candidates[0].geometry.location;
+};
+
+// google api response format:
+// {
+//   "candidates": [
+//       {
+//           "geometry": {
+//               "location": {
+//                   "lat": 45.6346308,
+//                   "lng": 9.0504105
+//               },
+//               "viewport": {
+//                   "northeast": {
+//                       "lat": 45.63609037989271,
+//                       "lng": 9.051762479892721
+//                   },
+//                   "southwest": {
+//                       "lat": 45.63339072010727,
+//                       "lng": 9.049062820107277
+//                   }
+//               }
+//           }
+//       }
+//   ],
+//   "status": "OK"
+// }

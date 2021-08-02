@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, Button } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import * as Location from 'expo-location';
 import { loadPiles } from '../services/ApiService';
+import Header from '../components/dashboardHeader/Header';
 
 // import { ScrollView, FlatList } from 'react-native-gesture-handler';
 
@@ -9,8 +11,58 @@ const Dashboard = (props) => {
   const piles = useSelector((state) => state.piles);
   const dispatch = useDispatch();
 
+  const [foundLocation, setFoundLocation] = useState('hello');
+  const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
+  const [address, setAddress] = useState('Fetching location...');
+
+  const checkLocationEnabled = async () => {
+    const isEnabled = await Location.hasServicesEnabledAsync();
+    if (!isEnabled) {
+      console.log(
+        'The location service is not enabled',
+      );
+    } else {
+      setLocationServiceEnabled(isEnabled);
+    }
+  };
+
+  const getLocation = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      console.log('Geolocation permission denied. Allow the app to use geolocation.');
+    }
+    // Getting address info
+    const { coords } = await Location.getCurrentPositionAsync();
+    if (coords) {
+      const { latitude, longitude } = coords;
+      const res = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude,
+      });
+      // console.log(JSON.stringify(res));
+      const foundAddress = `${res[0].city}, ${res[0].postalCode}`;
+      // console.log(foundAddress);
+      setAddress(foundAddress);
+    }
+  };
+
   useEffect(() => {
+    checkLocationEnabled();
+    getLocation();
     dispatch(loadPiles());
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        // console.log('Permission to access location was denied');
+        return;
+      }
+      const location = await Location.getCurrentPositionAsync({});
+      setFoundLocation(location);
+      // console.log(location);
+    })();
   }, []);
 
   // const piles = useSelector((state) => state.piles.piles);
@@ -51,18 +103,18 @@ const Dashboard = (props) => {
   // </ScrollView>
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Dashboard!</Text>
+    <View>
+      <Header yourAddress={address} />
 
-      <View>
-        <Text>{JSON.stringify(piles[0], null, 2)}</Text>
+      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Dashboard!</Text>
+
+        <Button
+          title="Go to Detail"
+          onPress={() => props.navigation.navigate('PileDetail')}
+        />
+
       </View>
-
-      <Button
-        title="Go to Detail"
-        onPress={() => props.navigation.navigate('PileDetail')}
-      />
-
     </View>
   );
 };

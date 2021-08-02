@@ -10,16 +10,26 @@
   "dependencies": {
     "@react-native-community/hooks": "^2.6.0",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-picker/picker": "^1.16.4",
     "@react-navigation/bottom-tabs": "^5.11.11",
     "@react-navigation/material-bottom-tabs": "^5.3.15",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.5",
     "expo": "~42.0.1",
+    "expo-constants": "~11.0.1",
+    "expo-image-picker": "~10.2.2",
+    "expo-location": "~12.1.2",
     "expo-status-bar": "~1.0.4",
+    "geolocation-utils": "^1.2.5",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-geocode": "^0.2.3",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+    "react-native-geolocation-service": "^5.3.0-beta.1",
     "react-native-gesture-handler": "~1.10.2",
+    "react-native-get-location": "^2.1.1",
+    "react-native-google-places-autocomplete": "^2.2.0",
+    "react-native-modern-datepicker": "^1.0.0-beta.91",
     "react-native-paper": "^4.9.2",
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.2.0",
@@ -29,8 +39,7 @@
     "react-navigation": "^4.4.4",
     "react-redux": "^7.2.4",
     "redux": "^4.1.0",
-    "redux-thunk": "^2.3.0",
-    "expo-constants": "~11.0.1"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

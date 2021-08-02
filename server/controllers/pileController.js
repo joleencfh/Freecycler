@@ -2,6 +2,7 @@ const Pile = require('../models/pileModel');
 
 const getAllPiles = async (req, res) => {
   try {
+    console.log("getAllPiles executed");
     const piles = await Pile.find();
     res.status(200).json(piles);
   } catch (e) {

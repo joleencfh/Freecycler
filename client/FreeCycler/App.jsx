@@ -8,7 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import pilesReducer from './store/Reducers';
 import Dashboard from './containers/Dashboard';
-import AddPileForm from './components/addPileWizard/AddPileForm';
+import WizardPages from './containers/addPileWizard/WizardPages';
 import PileDetail from './components/pileDetail';
 import Favorites from './components/favorites';
 
@@ -68,7 +68,7 @@ export default function App() {
       <NavigationContainer>
         <BottomTab.Navigator
           labeled={false}
-          barStyle={{ backgroundColor: '#edb75f' }}
+          barStyle={{ backgroundColor: '#807f7e' }}
         >
 
           <BottomTab.Screen
@@ -82,7 +82,7 @@ export default function App() {
           />
           <BottomTab.Screen
             name="AddPileForm"
-            component={AddPileForm}
+            component={WizardPages}
             listeners={resetDashboardStack}
             options={{
               tabBarIcon: () => (
