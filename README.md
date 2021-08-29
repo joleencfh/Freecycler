@@ -26,12 +26,19 @@ cd Freecycler
 npm install
 ```
 
-3. Start development server
+3. Start server
 ```
+cd server
+nodemon
+```
+
+4. Start development server
+```
+cd client
 npm start
 ```
 
-4. Scan the barcode with the Expo app on your phone or follow the terminal instructions to load up the emulator on your machine.
+5. Scan the barcode with the Expo app on your phone or follow the terminal instructions to load up the emulator on your machine.
 
  ## Tech Stack
  [React Native](https://reactnative.dev/), [JavaScript](https://www.javascript.com/), [Redux](https://redux.js.org/), [MongoDB](https://www.mongodb.com/), [Mongoose](https://mongoosejs.com/), [Express](https://expressjs.com/).
