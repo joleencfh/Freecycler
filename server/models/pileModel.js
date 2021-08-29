@@ -6,25 +6,29 @@ const PileSchema = new Schema({
   id: {
     type: Number,
   },
-  types: {
-    type: [String],
+  type: {
+    type: String,
     required: true,
   },
   location: {
     type: String,
     required: true,
   },
+  coords: {
+    type: { lat: Number, lon: Number },
+    required: false,
+  },
   owner: {
     type: String,
-    required: true,
+    required: false,
   },
   amountOfItems: {
-    type: Number,
+    type: String,
     required: true,
   },
   whatsLeft: {
     type: Number,
-    required: true,
+    required: false,
   },
   time: {
     type: String,

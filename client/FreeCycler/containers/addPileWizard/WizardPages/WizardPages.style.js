@@ -7,13 +7,13 @@ export default StyleSheet.create({
     height: '100%',
     paddingTop: 80,
     backgroundColor: 'white',
+    justifyContent: 'space-around',
 
   },
   button: {
     marginVertical: 10,
     paddingHorizontal: 20,
     paddingVertical: 10,
-
   },
   buttons: {
     display: 'flex',
@@ -42,8 +42,7 @@ export default StyleSheet.create({
     height: 260,
     width: 300,
     margin: 20,
-    borderRadius: 100,
-    opacity: 0.2,
+    borderRadius: 80,
   },
 
 });

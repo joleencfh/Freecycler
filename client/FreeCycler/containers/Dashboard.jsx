@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Button } from 'react-native';
+import { ScrollView, FlatList, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Location from 'expo-location';
 import { loadPiles } from '../services/ApiService';
 import Header from '../components/dashboardHeader/Header';
-
-// import { ScrollView, FlatList } from 'react-native-gesture-handler';
+import PileCard from '../components/PileCard/PileCard';
+import styles from './Dashboard.style';
 
 const Dashboard = (props) => {
-  const piles = useSelector((state) => state.piles);
   const dispatch = useDispatch();
+
+  const piles = useSelector((state) => state.piles);
 
   const [foundLocation, setFoundLocation] = useState('hello');
   const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
@@ -52,6 +53,9 @@ const Dashboard = (props) => {
     dispatch(loadPiles());
   }, []);
 
+  // console.log("these are the ", piles);
+  // console.log("piles length", piles[0]);
+
   useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -65,58 +69,37 @@ const Dashboard = (props) => {
     })();
   }, []);
 
-  // const piles = useSelector((state) => state.piles.piles);
-  // return (
-  // <ScrollView style={styles.container}>
-  //   <FlatList
-  //     data={piles}
-  //             // to give a unique id to the flatlist, for each pile
-  //     keyExtractor={(pile) => pile.id.toString()}
-  //     renderItem={(data) => (
-  //       <PileCard
-  //         onPress={() => {
-  //           props.navigation.navigate(
-  //             'PileDetails',
-  //             // to pass the pile data to PileDetails, accessible from route.params.keyname
-  //             // fx route.params.types
-  //             {
-  //               id: data.item.id,
-  //               types: data.item.types,
-  //               location: data.item.location,
-  //               owner: data.item.owner,
-  //               amountOfItems: data.item.amountOfItems,
-  //               description: data.item.description,
-  //               // favoritesNum: data.item.favoritesNum,
-  //               pictureUri: data.item.pictureUri,
-  //               whatsLeft: data.item.whatsLeft,
-  //               time: data.item.time,
-  //             },
-  //           );
-  //         }}
-  //         types={data.item.types}
-  //         location={data.item.location}
-  //         whatsLeft={data.item.whatsLeft}
-  //         time={data.item.time}
-  //       />
-  //     )}
-  //   />
-  // </ScrollView>
-
   return (
-    <View>
+    <ScrollView
+      style={styles.container}
+    >
       <Header yourAddress={address} />
-
-      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Dashboard!</Text>
-
-        <Button
-          title="Go to Detail"
-          onPress={() => props.navigation.navigate('PileDetail')}
-        />
-
-      </View>
-    </View>
+      <FlatList
+        data={piles[0]}
+              // to give a unique id to the flatlist, for each pile
+        keyExtractor={(pile) => pile._id}
+        renderItem={(pile) => (
+          <Pressable
+            onPress={() => {
+              props.navigation.navigate('PileDetail', {
+                type: pile.item.type,
+                location: pile.item.location,
+                owner: pile.item.owner,
+                amountOfItems: pile.item.amountOfItems,
+                whatsLeft: pile.item.whatsLeft,
+                time: pile.item.time,
+                description: pile.item.description,
+                pictureUri: pile.item.pictureUri,
+              });
+            }}
+          >
+            <PileCard
+              pile={pile}
+            />
+          </Pressable>
+        )}
+      />
+    </ScrollView>
   );
 };
-
 export default Dashboard;

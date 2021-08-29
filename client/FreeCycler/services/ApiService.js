@@ -1,5 +1,5 @@
 import Constants from 'expo-constants';
-import { setPiles } from '../store/Actions';
+import { addPile, setPiles } from '../store/Actions';
 
 // needed to have Expo connect to server on local machine
 const { manifest } = Constants;
@@ -8,18 +8,16 @@ const url = `http://${manifest.debuggerHost.split(':').shift()}:3001/piles`;
 // the following thunks create a function in which you can access
 // your store data and dispatch new actions
 
-export const savePiles = () => async (dispatch, getState) => {
-  // get all piles from Redux state
-  const { piles } = getState().piles;
-  // post them to DB
+export const postPile = (pile) => async (dispatch) => {
   try {
     await fetch(`${url}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(piles),
+      body: JSON.stringify(pile),
     });
+    dispatch(addPile(pile));
   } catch (err) {
     console.error(err);
   }
@@ -28,23 +26,22 @@ export const savePiles = () => async (dispatch, getState) => {
 export const loadPiles = () => async (dispatch) => {
   try {
     const piles = await fetch(`${url}`).then((res) => res.json());
-    console.log({ piles });
     dispatch(setPiles(piles));
   } catch (err) {
     console.error(err);
-    console.log('loadPiles executed');
+    console.log('error in loadPiles');
   }
 };
 
-// ----------------end of thunks ------------------
+// ----------------end of pile thunks ------------------
 
 export const getLonLat = async (address) => {
   const encodedAddress = encodeURI(address);
   let lonLat;
   try {
-    lonLat = await fetch(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodedAddress}&inputtype=textquery&key=AIzaSyBZ6MJ6FdK2jdxooX3Eogsd_GD6njPWtu8&fields=geometry`)
+    lonLat = await fetch(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodedAddress}&inputtype=textquery&key=AIzaSyA62tCGwBxLnPqdICzObxVoPdFNYfxBDoQ&fields=geometry`)
       .then((res) => res.json());
-    console.log(lonLat.candidates[0].geometry.location);
+    console.log('api call', lonLat.candidates[0].geometry.location);
   } catch (e) {
     console.err(e);
   }

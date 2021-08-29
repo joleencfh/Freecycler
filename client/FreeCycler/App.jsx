@@ -8,9 +8,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import pilesReducer from './store/Reducers';
 import Dashboard from './containers/Dashboard';
-import WizardPages from './containers/addPileWizard/WizardPages';
-import PileDetail from './components/pileDetail';
+import WizardPages from './containers/addPileWizard/WizardPages/WizardPages';
+import PileCard from './components/PileCard/PileCard';
+import PileDetail from './components/PileDetail/PileDetail';
 import Favorites from './components/favorites';
+import AddUpdate from './containers/AddUpdate/AddUpdate';
 
 // --------Redux setup-----------
 const mainReducer = combineReducers({
@@ -32,6 +34,9 @@ const DashboardStack = () => (
   >
     <Stack.Screen name="Dashboard" component={Dashboard} />
     <Stack.Screen name="PileDetail" component={PileDetail} />
+    <Stack.Screen name="PileCard" component={PileCard} />
+    <Stack.Screen name="WizardPages" component={WizardPages} />
+    <Stack.Screen name="AddUpdate" component={AddUpdate} />
   </Stack.Navigator>
 );
 
@@ -68,7 +73,7 @@ export default function App() {
       <NavigationContainer>
         <BottomTab.Navigator
           labeled={false}
-          barStyle={{ backgroundColor: '#807f7e' }}
+          barStyle={{ backgroundColor: '#323333' }}
         >
 
           <BottomTab.Screen

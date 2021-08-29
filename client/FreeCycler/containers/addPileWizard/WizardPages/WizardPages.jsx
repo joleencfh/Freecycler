@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react';
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
-  View, Text, TouchableOpacity, TouchableHighlight, Image,
-  TextInput, TouchableWithoutFeedback, SafeAreaView, ScrollView, Keyboard,
+  View, Text, TouchableOpacity, Image,
+  TextInput, ScrollView, processColor,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Picker } from '@react-native-picker/picker';
 import DatePicker from 'react-native-modern-datepicker';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import * as ImagePicker from 'expo-image-picker';
-import { encode } from 'js-base64';
 import styles from './WizardPages.style';
-import { getLonLat } from '../../services/ApiService';
+import { getLonLat, postPile } from '../../../services/ApiService';
 
-const WizardPages = () => {
-  // const dispatch = useDispatch();
-
+const WizardPages = ({ navigation }) => {
   const [pageNum, setPageNum] = useState(1);
   const [types, setTypes] = useState([]);
   const [numItems, setNumItems] = useState(0);
@@ -26,11 +23,7 @@ const WizardPages = () => {
   const [description, setDescription] = useState('');
   const [uploadedImage, setUploadedImage] = useState(null);
 
-  // const [pile, setPile] = useState();
-
-  useEffect(() => {
-    console.log('coords', coords);
-  }, [coords]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -41,6 +34,33 @@ const WizardPages = () => {
     }
     )();
   }, []);
+
+  const goToDetail = (newPile) => {
+    navigation.navigate('PileDetail', {
+      type: newPile.type,
+      location: newPile.location,
+      amountOfItems: newPile.amountOfItems,
+      time: newPile.time,
+      description: newPile.description,
+      pictureUri: newPile.pictureUri,
+      coords,
+    });
+  };
+
+  const createPile = () => {
+    const newPile = {
+      type: types,
+      location,
+      amountOfItems: numItems,
+      time: endTime,
+      description,
+      pictureUri: uploadedImage,
+      coords,
+    };
+    dispatch(postPile(newPile));
+    console.log(coords);
+    goToDetail(newPile);
+  };
 
   const samplePic = 'https://res.cloudinary.com/dfc03vohq/image/upload/v1627887048/Ps-and-Qs_Side-of-road-free_vuvlrd.jpg';
 
@@ -59,6 +79,13 @@ const WizardPages = () => {
     </View>
   );
 
+  const FinalButtons = () => (
+    <View style={styles.buttons}>
+      <MyButton name="arrowleft" cb={() => setPageNum(pageNum - 1)} />
+      <MyButton name="check" cb={() => createPile()} />
+    </View>
+  );
+
   const Title = ({ text }) => (
     <View>
       <Text style={styles.header}>{text}</Text>
@@ -69,7 +96,7 @@ const WizardPages = () => {
 
   const TypePicker = () => (
     <Picker
-      selectedValue={numItems}
+      selectedValue={types}
       onValueChange={(itemValue) => setTypes(itemValue)}
       style={{ height: 300, width: 300 }}
       itemStyle={{ fontSize: 25, fontFamily: 'Baskerville' }}
@@ -85,19 +112,34 @@ const WizardPages = () => {
     </Picker>
   );
 
+  const AmountPicker = () => (
+    <Picker
+      selectedValue={numItems}
+      onValueChange={(itemValue) => setNumItems(itemValue)}
+      style={{ height: 300, width: 300 }}
+      itemStyle={{ fontSize: 25, fontFamily: 'Baskerville' }}
+    >
+      <Picker.Item label="0 - 5" value="0 - 5" />
+      <Picker.Item label="5 - 10" value="5 - 10" />
+      <Picker.Item label="10+" value="10+" />
+    </Picker>
+  );
+
   const AddressAutocomplete = () => (
     <GooglePlacesAutocomplete
       placeholder="Enter the address..."
       onPress={(data) => {
         setLocation(data.description);
-        setCoords(getLonLat(data.description));
-        console.log('coords: ', coords);
-        // console.log('this is', location);
-        // console.log('complete location data --------');
-        // console.log(data);
+        getLonLat(data.description).then((coordData) => {
+          console.log(coordData);
+          setCoords(coordData);
+          console.log('state coords:', coords);
+        });
+        // console.log('coords', getLonLat(data.description));
+        // setCoords(getLonLat(data.description));
       }}
       query={{
-        key: 'AIzaSyBZ6MJ6FdK2jdxooX3Eogsd_GD6njPWtu8',
+        key: process.env.API_KEY,
         language: 'en',
       }}
       styles={{
@@ -138,10 +180,6 @@ const WizardPages = () => {
     if (!res.cancelled) {
       console.log('res', res.uri);
       const base64Img = `data:image/jpg;base64,${res.base64}`;
-      // const imgData = {
-      //   file: base64Img,
-      //   upload_preset: 'su92rvke',
-      // };
       uploadPic(base64Img);
     }
   };
@@ -152,7 +190,7 @@ const WizardPages = () => {
         return (
           <View style={styles.screen}>
             <View>
-              <Title text="Here you can let people know about what you're freecycling" />
+              <Title text="Here you can let people know what you're freecycling." />
               <Text style={styles.secondHeader}>Let&apos;s get started!</Text>
             </View>
             <MyButton name="arrowright" cb={() => setPageNum(pageNum + 1)} />
@@ -170,16 +208,7 @@ const WizardPages = () => {
         return (
           <View style={styles.screen}>
             <Title text="How many items?" />
-            <Picker
-              selectedValue={numItems}
-              onValueChange={(itemValue) => setNumItems(itemValue)}
-              style={{ height: 300, width: 300 }}
-              itemStyle={{ fontSize: 25, fontFamily: 'Baskerville' }}
-            >
-              <Picker.Item label="0 - 5" value="0 - 5" />
-              <Picker.Item label="5 - 10" value="5 - 10" />
-              <Picker.Item label="10+" value="10+" />
-            </Picker>
+            <AmountPicker />
             <Buttons />
           </View>
         );
@@ -236,19 +265,26 @@ const WizardPages = () => {
       case 7:
         return (
           <View style={styles.screen}>
+
             <Title text="Tell us more..." />
-            {/* Touchable wrap is to get rid of keyboard */}
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-              <View>
-                <TextInput
-                  style={styles.input}
-                  onChangeText={setDescription}
-                  value={description}
-                  placeholder="Describe your items."
-                  multiline
-                />
-              </View>
-            </TouchableWithoutFeedback>
+
+            <ScrollView
+              contentContainerStyle={{
+                flex: 1,
+                justifyContent: 'center',
+              }}
+              keyboardShouldPersistTaps="handled"
+            >
+              <TextInput
+                keyboardType="default"
+                style={styles.input}
+                onChangeText={setDescription}
+                value={description}
+                placeholder="Describe your items."
+                multiline
+              />
+            </ScrollView>
+
             <Buttons />
           </View>
         );
@@ -267,8 +303,8 @@ const WizardPages = () => {
         return (
           <View style={styles.screen}>
             <Title text="...And you're done." />
-            <Title text="Hi five freecycler!" />
-            <MyButton name="arrowleft" cb={() => setPageNum(pageNum - 1)} />
+            <Title text="Hi five, freecycler!" />
+            <FinalButtons />
           </View>
         );
 

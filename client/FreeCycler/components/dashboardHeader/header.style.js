@@ -2,15 +2,25 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
-    padding: 10,
+    padding: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#807f7e',
+    backgroundColor: '#323333',
     paddingTop: 30,
+    marginTop: 0,
+  },
+  location: {
+    flexDirection: 'row',
   },
   text: {
     color: 'white',
-    fontFamily: 'Baskerville',
-    fontSize: 20,
+    fontSize: 17,
+    fontFamily: 'Avenir',
+    fontWeight: '600',
+    marginHorizontal: 10,
+  },
+  smallText: {
+    color: '#c4c4c4',
+    fontFamily: 'Avenir',
   },
 });
