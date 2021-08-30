@@ -7,7 +7,7 @@
 ## The idea
 
 In some cities people have the habit of throwing away perfectly usable (or repairable) goods, such as furniture, books, and clothes, by simply placing them in front of their homes. Freecycler allows the original owners to notify everyone on the app that the goods are available, so that interested people can have a more efficient way of spotting freecycling opportunities. \
-The result? Having Less waste and being one step closer to a circular economy!
+The result? Having less waste and being one step closer to a circular economy!
 
 ## Screenshots
 
