@@ -4,6 +4,16 @@
 
 ![freecycler header](https://user-images.githubusercontent.com/25979741/131258932-db7bbe11-3131-4a12-b568-2fb67764a5c5.png)
 
+## The idea
+
+In some cities people have the habit of throwing away perfectly usable (or repairable) goods, such as furniture, books, and clothes, by simply placing them in front of their homes. Freecycler allows the original owners to notify everyone on the app that the goods are available, so that interested people can have a more efficient way of spotting freecycling opportunities. \
+The result? Having Less waste and being one step closer to a circular economy!
+
+## Screenshots
+
+![screens head](https://user-images.githubusercontent.com/25979741/131319191-541cbb26-7c61-4d7d-b2b9-2409ccc6131c.png)
+
+
 ## Getting started
 
 Except for the regular suspects - git, Node, npm, etc - you need these things to run the Freecycler app. Follow the instructions supplied on their links before you continue with *Installation*.
