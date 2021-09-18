@@ -12,7 +12,7 @@ import WizardPages from './containers/addPileWizard/WizardPages/WizardPages';
 import PileCard from './components/PileCard/PileCard';
 import PileDetail from './components/PileDetail/PileDetail';
 import Favorites from './components/favorites';
-import AddUpdate from './containers/AddUpdate/AddUpdate';
+import AddUpdate from './containers/AddUpdateWizard/AddUpdate';
 
 // --------Redux setup-----------
 const mainReducer = combineReducers({

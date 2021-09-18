@@ -8,7 +8,6 @@ export default StyleSheet.create({
     paddingTop: 80,
     backgroundColor: 'white',
     justifyContent: 'space-around',
-
   },
   button: {
     marginVertical: 10,

@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  View, Text, TouchableOpacity, Image,
-  TextInput, ScrollView, processColor,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
-import { Picker } from '@react-native-picker/picker';
-import DatePicker from 'react-native-modern-datepicker';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { View, Text, Image, TextInput, ScrollView } from 'react-native';
+import { MyButton, Buttons, FinalPageButtons, Title } from '../../commonWizardComponents';
+import { TypePicker, AmountPicker, CustomDatePicker } from '../../tools/Pickers';
+import AddressAutocomplete from '../../tools/AddressAutocomplete';
 import * as ImagePicker from 'expo-image-picker';
+import takePicture from '../../tools/TakePicture';
 import styles from './WizardPages.style';
-import { getLonLat, postPile } from '../../../services/ApiService';
+import { postPile } from '../../../services/ApiService';
 
 const WizardPages = ({ navigation }) => {
   const [pageNum, setPageNum] = useState(1);
@@ -58,216 +55,79 @@ const WizardPages = ({ navigation }) => {
       coords,
     };
     dispatch(postPile(newPile));
-    console.log(coords);
+    // console.log(coords);
     goToDetail(newPile);
   };
 
+  const ScreenLayout = ({ children}) => (
+    <View style={styles.screen}>
+      {children}
+    </View>
+  )
+
   const samplePic = 'https://res.cloudinary.com/dfc03vohq/image/upload/v1627887048/Ps-and-Qs_Side-of-road-free_vuvlrd.jpg';
 
-  // --------------- components ----------------------
-
-  const MyButton = ({ name, cb }) => (
-    <TouchableOpacity onPress={cb} style={styles.button}>
-      <Icon size={26} name={name} />
-    </TouchableOpacity>
-  );
-
-  const Buttons = () => (
-    <View style={styles.buttons}>
-      <MyButton name="arrowleft" cb={() => setPageNum(pageNum - 1)} />
-      <MyButton name="arrowright" cb={() => setPageNum(pageNum + 1)} />
-    </View>
-  );
-
-  const FinalButtons = () => (
-    <View style={styles.buttons}>
-      <MyButton name="arrowleft" cb={() => setPageNum(pageNum - 1)} />
-      <MyButton name="check" cb={() => createPile()} />
-    </View>
-  );
-
-  const Title = ({ text }) => (
-    <View>
-      <Text style={styles.header}>{text}</Text>
-    </View>
-  );
-
-  // ------------------ tools ------------------------
-
-  const TypePicker = () => (
-    <Picker
-      selectedValue={types}
-      onValueChange={(itemValue) => setTypes(itemValue)}
-      style={{ height: 300, width: 300 }}
-      itemStyle={{ fontSize: 25, fontFamily: 'Baskerville' }}
-    >
-      <Picker.Item label="Furniture" value="Furniture" />
-      <Picker.Item label="Books" value="Books" />
-      <Picker.Item label="Clothing" value="Clothing" />
-      <Picker.Item label="Electronics" value="Electronics" />
-      <Picker.Item label="Food" value="Food" />
-      <Picker.Item label="Home Appliances" value="Home Appliances" />
-      <Picker.Item label="Raw Materials" value="Raw Materials" />
-      <Picker.Item label="Miscellaneous" value="Miscellaneous" />
-    </Picker>
-  );
-
-  const AmountPicker = () => (
-    <Picker
-      selectedValue={numItems}
-      onValueChange={(itemValue) => setNumItems(itemValue)}
-      style={{ height: 300, width: 300 }}
-      itemStyle={{ fontSize: 25, fontFamily: 'Baskerville' }}
-    >
-      <Picker.Item label="0 - 5" value="0 - 5" />
-      <Picker.Item label="5 - 10" value="5 - 10" />
-      <Picker.Item label="10+" value="10+" />
-    </Picker>
-  );
-
-  const AddressAutocomplete = () => (
-    <GooglePlacesAutocomplete
-      placeholder="Enter the address..."
-      onPress={(data) => {
-        setLocation(data.description);
-        getLonLat(data.description).then((coordData) => {
-          console.log(coordData);
-          setCoords(coordData);
-          console.log('state coords:', coords);
-        });
-        // console.log('coords', getLonLat(data.description));
-        // setCoords(getLonLat(data.description));
-      }}
-      query={{
-        key: process.env.API_KEY,
-        language: 'en',
-      }}
-      styles={{
-        textInput: {
-          fontSize: 20,
-          fontFamily: 'Baskerville',
-          color: '#696866',
-        },
-      }}
-    />
-  );
-
-  const uploadPic = async (img) => {
-    const picData = new FormData();
-    picData.append('file', img);
-    picData.append('upload_preset', 'su92rvke');
-    picData.append('cloud_name', 'dfc03vohq');
-    console.log(img);
-    fetch('https://api.cloudinary.com/v1_1/dfc03vohq/image/upload', {
-      method: 'POST',
-      body: picData,
-    }).then((res) => res.json())
-      .then((pic) => {
-        setUploadedImage(pic.url);
-        console.log('this is the pic data', pic);
-      });
-  };
-
-  const takePicture = async () => {
-    const res = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      base64: true,
-      allowsEditing: true,
-      quality: 1,
-      aspect: [4, 3],
-
-    });
-    if (!res.cancelled) {
-      console.log('res', res.uri);
-      const base64Img = `data:image/jpg;base64,${res.base64}`;
-      uploadPic(base64Img);
-    }
-  };
 
   const renderSwitch = (page) => {
     switch (page) {
       case 1:
         return (
-          <View style={styles.screen}>
+          <ScreenLayout>
             <View>
               <Title text="Here you can let people know what you're freecycling." />
               <Text style={styles.secondHeader}>Let&apos;s get started!</Text>
             </View>
             <MyButton name="arrowright" cb={() => setPageNum(pageNum + 1)} />
-          </View>
+          </ScreenLayout>
         );
       case 2:
         return (
-          <View style={styles.screen}>
+          <ScreenLayout>
             <Title text="What are you freecycling?" />
-            <TypePicker />
+            <TypePicker types={types} setTypes={setTypes}/>
             <Buttons />
-          </View>
+          </ScreenLayout>
         );
       case 3:
         return (
-          <View style={styles.screen}>
+          <ScreenLayout>
             <Title text="How many items?" />
-            <AmountPicker />
+            <AmountPicker numItems={numItems} setNumItems={setNumItems} />
             <Buttons />
-          </View>
+          </ScreenLayout>
         );
       case 4:
         return (
-          <View style={styles.screen}>
+          <ScreenLayout>
             <Title text="Location?" />
             <View style={{ height: 200, width: 300 }}>
-              <AddressAutocomplete />
+              <AddressAutocomplete setLocation={setLocation} setCoords={setCoords} />
             </View>
             <Buttons />
-          </View>
+          </ScreenLayout>
         );
       case 5:
         return (
-          <View style={styles.screen}>
+          <ScreenLayout>
             <Title text="How long is it available?" />
             <Text style={styles.secondHeader}>Start Time:</Text>
-            <DatePicker
-              options={{
-                backgroundColor: 'white',
-                textHeaderColor: 'black',
-                textDefaultColor: 'grey',
-                selectedTextColor: '#fff',
-                mainColor: 'black',
-                textSecondaryColor: '#D6C7A1',
-                borderColor: 'rgba(122, 146, 165, 0.1)',
-              }}
-              onSelectedChange={(date) => setStartTime(date)}
-            />
+            <CustomDatePicker setTime={setStartTime} />
             <Buttons />
-          </View>
+          </ScreenLayout>
         );
       case 6:
         return (
-          <View style={styles.screen}>
+          <ScreenLayout>
             <Title text="How long is it available?" />
             <Text style={styles.secondHeader}>End Time:</Text>
-            <DatePicker
-              options={{
-                backgroundColor: 'white',
-                textHeaderColor: 'black',
-                textDefaultColor: 'grey',
-                selectedTextColor: '#fff',
-                mainColor: 'black',
-                textSecondaryColor: '#D6C7A1',
-                borderColor: 'rgba(122, 146, 165, 0.1)',
-              }}
-              onSelectedChange={(date) => setEndTime(date)}
-            />
+            <CustomDatePicker setTime={setEndTime} />
             <Buttons />
-          </View>
+          </ScreenLayout>
         );
       case 7:
         return (
-          <View style={styles.screen}>
-
+          <ScreenLayout>
             <Title text="Tell us more..." />
-
             <ScrollView
               contentContainerStyle={{
                 flex: 1,
@@ -286,26 +146,26 @@ const WizardPages = ({ navigation }) => {
             </ScrollView>
 
             <Buttons />
-          </View>
+          </ScreenLayout>
         );
       case 8:
         return (
-          <View style={styles.screen}>
+          <ScreenLayout>
             <Title text="Now go ahead and take a picture" />
             {uploadedImage
               ? <Image source={{ uri: uploadedImage }} style={styles.imgStyle} />
               : <Image source={{ uri: samplePic }} style={styles.imgStyle} />}
-            <MyButton name="pluscircleo" cb={() => takePicture()} />
+            <MyButton name="pluscircleo" cb={() => takePicture(setUploadedImage)} />
             <Buttons />
-          </View>
+          </ScreenLayout>
         );
       case 9:
         return (
-          <View style={styles.screen}>
+          <ScreenLayout>
             <Title text="...And you're done." />
             <Title text="Hi five, freecycler!" />
-            <FinalButtons />
-          </View>
+            <FinalPageButtons createPile={createPile}/>
+          </ScreenLayout>
         );
 
       default:
