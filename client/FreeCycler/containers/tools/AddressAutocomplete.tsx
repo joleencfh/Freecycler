@@ -1,7 +1,13 @@
+import React from 'react';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { getLonLat } from '../../services/ApiService';
 
- const AddressAutocomplete = ({ setLocation, setCoords }) => (
+type Props = {
+  setLocation: (data: string) => void;
+  setCoords: (data: string) => void;
+}
+
+const AddressAutocomplete = ({ setLocation, setCoords }: Props) => (
   <GooglePlacesAutocomplete
     placeholder="Enter the address..."
     onPress={(data) => {

@@ -8,8 +8,13 @@ import * as ImagePicker from 'expo-image-picker';
 import takePicture from '../../tools/TakePicture';
 import styles from './WizardPages.style';
 import { postPile } from '../../../services/ApiService';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../../Types/NavigationTypes';
+import { PileType } from '../../../Types/PileType';
 
-const WizardPages = ({ navigation }) => {
+type Props = NativeStackScreenProps<RootStackParamList, 'PileDetail' >;
+
+const WizardPages = ({ navigation }: Props) => {
   const [pageNum, setPageNum] = useState(1);
   const [types, setTypes] = useState([]);
   const [numItems, setNumItems] = useState(0);
@@ -32,16 +37,18 @@ const WizardPages = ({ navigation }) => {
     )();
   }, []);
 
-  const goToDetail = (newPile) => {
-    navigation.navigate('PileDetail', {
-      type: newPile.type,
-      location: newPile.location,
-      amountOfItems: newPile.amountOfItems,
-      time: newPile.time,
-      description: newPile.description,
-      pictureUri: newPile.pictureUri,
-      coords,
-    });
+  const goToDetail = (newPile: PileType) => {
+    navigation.navigate('PileDetail', newPile
+    // {
+    //   type: newPile.type,
+    //   location: newPile.location,
+    //   amountOfItems: newPile.amountOfItems,
+    //   time: newPile.time,
+    //   description: newPile.description,
+    //   pictureUri: newPile.pictureUri,
+    //   coords,
+    // }
+    );
   };
 
   const createPile = () => {
