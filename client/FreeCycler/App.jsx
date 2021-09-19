@@ -8,7 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import pilesReducer from './store/Reducers';
 import Dashboard from './containers/Dashboard';
-import WizardPages from './containers/addPileWizard/WizardPages/WizardPages';
+import WizardPages from './containers/addPileWizard/WizardPages/WizardPages.tsx';
 import PileCard from './components/PileCard/PileCard';
 import PileDetail from './components/PileDetail/PileDetail';
 import Favorites from './components/favorites';

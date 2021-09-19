@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { View, Text, Image, TextInput, ScrollView } from 'react-native';
+import { View, Text, Image, TextInput, ScrollView, Alert } from 'react-native';
 import { MyButton, Buttons, FinalPageButtons, Title } from '../../commonWizardComponents';
 import { TypePicker, AmountPicker, CustomDatePicker } from '../../tools/Pickers';
 import AddressAutocomplete from '../../tools/AddressAutocomplete';
@@ -16,14 +16,14 @@ type Props = NativeStackScreenProps<RootStackParamList, 'PileDetail' >;
 
 const WizardPages = ({ navigation }: Props) => {
   const [pageNum, setPageNum] = useState(1);
-  const [types, setTypes] = useState([]);
+  const [types, setTypes] = useState(["No Type"]);
   const [numItems, setNumItems] = useState(0);
   const [location, setLocation] = useState('');
-  const [coords, setCoords] = useState(null);
+  const [coords, setCoords] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [description, setDescription] = useState('');
-  const [uploadedImage, setUploadedImage] = useState(null);
+  const [uploadedImage, setUploadedImage] = useState('');
 
   const dispatch = useDispatch();
 
@@ -31,7 +31,7 @@ const WizardPages = ({ navigation }: Props) => {
     (async () => {
       const { status } = await ImagePicker.requestCameraPermissionsAsync();
       if (status !== 'granted') {
-        alert('Sorry, we need camera permissions to make this work!');
+        Alert.alert('Sorry, we need camera permissions to make this work!');
       }
     }
     )();
@@ -52,21 +52,26 @@ const WizardPages = ({ navigation }: Props) => {
   };
 
   const createPile = () => {
-    const newPile = {
-      type: types,
+    const newPile: PileType = {
+      types,
       location,
-      amountOfItems: numItems,
-      time: endTime,
-      description,
-      pictureUri: uploadedImage,
+      numItems,
       coords,
+      startTime,
+      endTime,
+      description,
+      image: uploadedImage,
     };
     dispatch(postPile(newPile));
     // console.log(coords);
     goToDetail(newPile);
   };
 
-  const ScreenLayout = ({ children}) => (
+  interface AuxProps {
+    children: JSX.Element | JSX.Element[];
+  }
+
+  const ScreenLayout = ({ children }: AuxProps)=> (
     <View style={styles.screen}>
       {children}
     </View>
@@ -75,7 +80,7 @@ const WizardPages = ({ navigation }: Props) => {
   const samplePic = 'https://res.cloudinary.com/dfc03vohq/image/upload/v1627887048/Ps-and-Qs_Side-of-road-free_vuvlrd.jpg';
 
 
-  const renderSwitch = (page) => {
+  const renderSwitch = (page: number) => {
     switch (page) {
       case 1:
         return (
