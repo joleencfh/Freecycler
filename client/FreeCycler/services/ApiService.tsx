@@ -1,5 +1,6 @@
 import Constants from 'expo-constants';
 import { addPile, setPiles } from '../store/Actions';
+import { PileType } from '../Types/PileType';
 
 // needed to have Expo connect to server on local machine
 const { manifest } = Constants;
@@ -8,7 +9,7 @@ const url = `http://${manifest.debuggerHost.split(':').shift()}:3001/piles`;
 // the following thunks create a function in which you can access
 // your store data and dispatch new actions
 
-export const postPile = (pile) => async (dispatch) => {
+export const postPile = (pile: PileType) => async (dispatch) => {
   try {
     await fetch(`${url}`, {
       method: 'POST',

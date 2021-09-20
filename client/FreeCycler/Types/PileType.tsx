@@ -1,4 +1,7 @@
+import { UpdateType } from "./UpdateType"
+
 export type PileType = {
+  _id?: string;
   types: string[];
   location: string;
   numItems: number;
@@ -7,4 +10,5 @@ export type PileType = {
   endTime: string;
   description: string;
   image: string;
+  updates: UpdateType[];
 }
