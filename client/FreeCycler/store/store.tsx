@@ -1,6 +1,6 @@
 import { configureStore, Action } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
-import { pilesSlice } from './Reducers';
+import { pilesSlice } from './Slices';
 import { ThunkAction } from 'redux-thunk';
 
 export const store = configureStore({

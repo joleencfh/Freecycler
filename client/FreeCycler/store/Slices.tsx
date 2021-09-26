@@ -6,7 +6,6 @@ import { RootState } from './store';
 
 const initialState: PileType[] = [];
 
-
 export const pilesSlice = createSlice({
   name: 'piles',
   initialState,

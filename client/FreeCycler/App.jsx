@@ -1,28 +1,18 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Provider } from 'react-redux';
-// import { createStore, combineReducers, applyMiddleware } from 'redux';
-// import thunk from 'redux-thunk';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-// import pilesReducer from './store/Reducers';
 import Dashboard from './containers/Dashboard';
 import WizardPages from './containers/addPileWizard/WizardPages/WizardPages.tsx';
 import PileCard from './components/PileCard/PileCard';
 import PileDetail from './components/PileDetail/PileDetail';
 import Favorites from './components/favorites';
 import AddUpdate from './containers/AddUpdateWizard/AddUpdate';
+import { store } from './store/store';
 
-// --------Redux setup-----------
-// const mainReducer = combineReducers({
-//   piles: pilesReducer,
-//   // will add more reducers here
-// });
 
-// const store = createStore(mainReducer, applyMiddleware(thunk));
-
-// ---------Navigation setup----------
 const Stack = createStackNavigator();
 const BottomTab = createMaterialBottomTabNavigator();
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, FlatList, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Location from 'expo-location';
-import { loadPiles } from '../services/ApiService';
+import { loadPiles } from '../services/PilesService';
 import Header from '../components/dashboardHeader/Header';
 import PileCard from '../components/PileCard/PileCard';
 import styles from './Dashboard.style';
@@ -70,13 +70,10 @@ const Dashboard = (props) => {
   }, []);
 
   return (
-    <ScrollView
-      style={styles.container}
-    >
+    <ScrollView style={styles.container}>
       <Header yourAddress={address} />
       <FlatList
         data={piles[0]}
-              // to give a unique id to the flatlist, for each pile
         keyExtractor={(pile) => pile._id}
         renderItem={(pile) => (
           <Pressable

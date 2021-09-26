@@ -1,6 +1,6 @@
 import React from 'react';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { getLonLat } from '../../services/ApiService';
+import { getLonLat } from '../../services/LocationService';
 
 type Props = {
   setLocation: (data: string) => void;
