@@ -5,9 +5,9 @@ import { MyButton, Buttons, FinalPageButtons, Title } from '../../commonWizardCo
 import { TypePicker, AmountPicker, CustomDatePicker } from '../../tools/Pickers';
 import AddressAutocomplete from '../../tools/AddressAutocomplete';
 import * as ImagePicker from 'expo-image-picker';
-import takePicture from '../../tools/TakePicture';
+import { takePicture } from '../../tools/TakePicture'
 import styles from './WizardPages.style';
-import { postPile } from '../../../services/ApiService';
+import { postPile } from '../../../services/PilesService';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../Types/NavigationTypes';
 import { PileType } from '../../../Types/PileType';
@@ -58,6 +58,7 @@ const WizardPages = ({ navigation }: Props) => {
       image: uploadedImage,
       updates: [] as UpdateType[],
     };
+    console.log('created pile ---', newPile);
     dispatch(postPile(newPile));
     // console.log(coords);
     goToDetail(newPile);
@@ -93,7 +94,7 @@ const WizardPages = ({ navigation }: Props) => {
           <ScreenLayout>
             <Title text="What are you freecycling?" />
             <TypePicker types={types} setTypes={setTypes}/>
-            <Buttons />
+            <Buttons setPageNum={setPageNum} pageNum={pageNum}/>
           </ScreenLayout>
         );
       case 3:
@@ -101,7 +102,7 @@ const WizardPages = ({ navigation }: Props) => {
           <ScreenLayout>
             <Title text="How many items?" />
             <AmountPicker numItems={numItems} setNumItems={setNumItems} />
-            <Buttons />
+            <Buttons setPageNum={setPageNum} pageNum={pageNum}/>
           </ScreenLayout>
         );
       case 4:
@@ -111,7 +112,7 @@ const WizardPages = ({ navigation }: Props) => {
             <View style={{ height: 200, width: 300 }}>
               <AddressAutocomplete setLocation={setLocation} setCoords={setCoords} />
             </View>
-            <Buttons />
+            <Buttons setPageNum={setPageNum} pageNum={pageNum}/>
           </ScreenLayout>
         );
       case 5:
@@ -120,7 +121,7 @@ const WizardPages = ({ navigation }: Props) => {
             <Title text="How long is it available?" />
             <Text style={styles.secondHeader}>Start Time:</Text>
             <CustomDatePicker setTime={setStartTime} />
-            <Buttons />
+            <Buttons setPageNum={setPageNum} pageNum={pageNum}/>
           </ScreenLayout>
         );
       case 6:
@@ -129,7 +130,7 @@ const WizardPages = ({ navigation }: Props) => {
             <Title text="How long is it available?" />
             <Text style={styles.secondHeader}>End Time:</Text>
             <CustomDatePicker setTime={setEndTime} />
-            <Buttons />
+            <Buttons setPageNum={setPageNum} pageNum={pageNum}/>
           </ScreenLayout>
         );
       case 7:
@@ -153,7 +154,7 @@ const WizardPages = ({ navigation }: Props) => {
               />
             </ScrollView>
 
-            <Buttons />
+            <Buttons setPageNum={setPageNum} pageNum={pageNum}/>
           </ScreenLayout>
         );
       case 8:
@@ -164,7 +165,7 @@ const WizardPages = ({ navigation }: Props) => {
               ? <Image source={{ uri: uploadedImage }} style={styles.imgStyle} />
               : <Image source={{ uri: samplePic }} style={styles.imgStyle} />}
             <MyButton name="pluscircleo" cb={() => takePicture(setUploadedImage)} />
-            <Buttons />
+            <Buttons setPageNum={setPageNum} pageNum={pageNum}/>
           </ScreenLayout>
         );
       case 9:
@@ -172,7 +173,7 @@ const WizardPages = ({ navigation }: Props) => {
           <ScreenLayout>
             <Title text="...And you're done." />
             <Title text="Hi five, freecycler!" />
-            <FinalPageButtons createPile={createPile}/>
+            <FinalPageButtons setPageNum={setPageNum} pageNum={pageNum} createPile={createPile}/>
           </ScreenLayout>
         );
 

@@ -1,10 +1,10 @@
-const Update = require('./Update');
+const {UpdateSchema} = require(__dirname +'/Update.js');
 const mongoose = require('./index');
 const { Schema } = mongoose;
 
 const PileSchema = new Schema({
   types: {
-    type: Array[String],
+    type:  [String],
     required: true,
   },
   location: {
@@ -44,7 +44,7 @@ const PileSchema = new Schema({
     required: true,
   },
   updates: {
-    type: Array[Update],
+    type: [UpdateSchema],
     required: false,
   }
 

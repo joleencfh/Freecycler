@@ -1,4 +1,4 @@
-const Pile = require('../models/pileModel');
+const Pile = require('../models/Pile');
 
 const getAllPiles = async (req, res) => {
   try {

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { getAllPiles, postPile } = require('./controllers/pileController');
+const { getAllPiles, postPile } = require('./controllers/Pile');
 
 router.get('/piles', getAllPiles);
 router.post('/piles', postPile);

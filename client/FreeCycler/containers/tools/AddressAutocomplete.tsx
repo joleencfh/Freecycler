@@ -11,6 +11,7 @@ const AddressAutocomplete = ({ setLocation, setCoords }: Props) => (
   <GooglePlacesAutocomplete
     placeholder="Enter the address..."
     onPress={(data) => {
+      console.log('data from Address Autocomplete:  ', data )
       setLocation(data.description);
       getLonLat(data.description).then((coordData) => {
         console.log(coordData);
