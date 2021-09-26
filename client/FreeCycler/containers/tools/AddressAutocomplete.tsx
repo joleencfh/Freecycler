@@ -4,7 +4,7 @@ import { getLonLat } from '../../services/ApiService';
 
 type Props = {
   setLocation: (data: string) => void;
-  setCoords: (data: string) => void;
+  setCoords: (data: { lat: number, lon: number}) => void;
 }
 
 const AddressAutocomplete = ({ setLocation, setCoords }: Props) => (

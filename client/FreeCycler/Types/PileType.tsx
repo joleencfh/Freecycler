@@ -5,9 +5,11 @@ export type PileType = {
   types: string[];
   location: string;
   numItems: number;
-  coords: string; //FIX THIS TYPE HERE
+  coords: { lat: number, lon: number }
   startTime: string;
   endTime: string;
+  owner: string;
+  whatsLeft: number;
   description: string;
   image: string;
   updates: UpdateType[];

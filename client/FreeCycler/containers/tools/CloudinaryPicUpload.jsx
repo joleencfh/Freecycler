@@ -1,4 +1,5 @@
-const uploadPic = (img) => {
+
+export default uploadPic = (img) => {
   const picData = new FormData();
   picData.append('file', img);
   picData.append('upload_preset', 'su92rvke');
@@ -14,4 +15,3 @@ const uploadPic = (img) => {
   // });
 };
 
-export default uploadPic;

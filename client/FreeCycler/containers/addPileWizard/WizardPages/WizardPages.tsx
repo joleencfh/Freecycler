@@ -11,6 +11,7 @@ import { postPile } from '../../../services/ApiService';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../Types/NavigationTypes';
 import { PileType } from '../../../Types/PileType';
+import { UpdateType } from '../../../Types/UpdateType';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'PileDetail' >;
 
@@ -19,7 +20,7 @@ const WizardPages = ({ navigation }: Props) => {
   const [types, setTypes] = useState(["No Type"]);
   const [numItems, setNumItems] = useState(0);
   const [location, setLocation] = useState('');
-  const [coords, setCoords] = useState('');
+  const [coords, setCoords] = useState({lat: 0, lon: 0});
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [description, setDescription] = useState('');
@@ -39,15 +40,7 @@ const WizardPages = ({ navigation }: Props) => {
 
   const goToDetail = (newPile: PileType) => {
     navigation.navigate('PileDetail', newPile
-    // {
-    //   type: newPile.type,
-    //   location: newPile.location,
-    //   amountOfItems: newPile.amountOfItems,
-    //   time: newPile.time,
-    //   description: newPile.description,
-    //   pictureUri: newPile.pictureUri,
-    //   coords,
-    // }
+
     );
   };
 
@@ -59,8 +52,11 @@ const WizardPages = ({ navigation }: Props) => {
       coords,
       startTime,
       endTime,
+      owner: "unknown", //FIX THIS 
+      whatsLeft: 4,
       description,
       image: uploadedImage,
+      updates: [] as UpdateType[],
     };
     dispatch(postPile(newPile));
     // console.log(coords);

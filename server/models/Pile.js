@@ -1,16 +1,17 @@
+const Update = require('./Update');
 const mongoose = require('./index');
-
 const { Schema } = mongoose;
 
 const PileSchema = new Schema({
-  id: {
-    type: Number,
-  },
-  type: {
-    type: String,
+  types: {
+    type: Array[String],
     required: true,
   },
   location: {
+    type: String,
+    required: true,
+  },
+  numItems: {
     type: String,
     required: true,
   },
@@ -18,30 +19,34 @@ const PileSchema = new Schema({
     type: { lat: Number, lon: Number },
     required: false,
   },
+  startTime: {
+    type: String,
+    required: true,
+  },
+  endTime: {
+    type: String,
+    required: true,
+  },
   owner: {
     type: String,
     required: false,
-  },
-  amountOfItems: {
-    type: String,
-    required: true,
   },
   whatsLeft: {
     type: Number,
     required: false,
   },
-  time: {
-    type: String,
-    required: true,
-  },
   description: {
     type: String,
     required: true,
   },
-  pictureUri: {
+  image: {
     type: String,
     required: true,
   },
+  updates: {
+    type: Array[Update],
+    required: false,
+  }
 
 });
 

@@ -1,9 +1,9 @@
 export type UpdateType = {
   pileId: string;
-  text: string;
-  updateId: number;
-  picture: string;
+  _id: number;
   time: string;
+  text: string;
   user: string;
+  picture: string;
   whatsLeft: string;
 }

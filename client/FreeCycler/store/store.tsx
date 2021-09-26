@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import pilesReducer from './Reducers';
+import { pilesSlice } from './Reducers';
 
 export const store = configureStore({
   reducer: {
-    piles: pilesReducer,
+    piles: pilesSlice.reducer,
     // updates: updatesReducer,
     // user: userReducer,
     // favorites: favoritesReducer,
