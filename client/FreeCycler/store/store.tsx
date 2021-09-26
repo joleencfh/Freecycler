@@ -1,5 +1,7 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, Action } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
 import { pilesSlice } from './Reducers';
+import { ThunkAction } from 'redux-thunk';
 
 export const store = configureStore({
   reducer: {
@@ -12,3 +14,5 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = () => useDispatch();
+export type AppThunk = ThunkAction<void, RootState, unknown, Action>
