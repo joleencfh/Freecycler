@@ -1,15 +1,20 @@
+import { API_KEY } from "@env";
 
 export const getLonLat = async (address: string): Promise<{lon: number, lat: number}> => {
     const encodedAddress = encodeURI(address);
     let lonLat;
+    console.log("inside lonLat function");
     try {
-      lonLat = await fetch(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodedAddress}&inputtype=textquery&key=AIzaSyA62tCGwBxLnPqdICzObxVoPdFNYfxBDoQ&fields=geometry`)
-        .then((res) => res.json());
+      lonLat = await fetch(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodedAddress}&inputtype=textquery&key=${API_KEY}&fields=geometry`)
+        .then((res) => {
+        res.json();
+        console.log("response from lonlat:  ", res);
+        });
       console.log('api call', lonLat.candidates[0].geometry.location);
     } catch (e) {
       console.error(e);
     }
-    return lonLat.candidates[0].geometry.location;
+    return lonLat.candidates[0].geometry.location as {lon: number, lat: number};
   };
   
   // google api response format:

@@ -56,7 +56,7 @@ const WizardPages = ({ navigation }: Props) => {
       whatsLeft: 4,
       description,
       image: uploadedImage,
-      updates: [] as UpdateType[],
+      updates: null,
     };
     console.log('created pile ---', newPile);
     dispatch(postPile(newPile));
@@ -72,6 +72,10 @@ const WizardPages = ({ navigation }: Props) => {
     <View style={styles.screen}>
       {children}
     </View>
+  )
+
+  const ButtonNavigation = () => (
+    <Buttons setPageNum={setPageNum} pageNum={pageNum}/>
   )
 
   const samplePic = 'https://res.cloudinary.com/dfc03vohq/image/upload/v1627887048/Ps-and-Qs_Side-of-road-free_vuvlrd.jpg';
@@ -94,7 +98,7 @@ const WizardPages = ({ navigation }: Props) => {
           <ScreenLayout>
             <Title text="What are you freecycling?" />
             <TypePicker types={types} setTypes={setTypes}/>
-            <Buttons setPageNum={setPageNum} pageNum={pageNum}/>
+            <ButtonNavigation/>
           </ScreenLayout>
         );
       case 3:
@@ -102,7 +106,7 @@ const WizardPages = ({ navigation }: Props) => {
           <ScreenLayout>
             <Title text="How many items?" />
             <AmountPicker numItems={numItems} setNumItems={setNumItems} />
-            <Buttons setPageNum={setPageNum} pageNum={pageNum}/>
+            <ButtonNavigation/>
           </ScreenLayout>
         );
       case 4:
@@ -112,7 +116,7 @@ const WizardPages = ({ navigation }: Props) => {
             <View style={{ height: 200, width: 300 }}>
               <AddressAutocomplete setLocation={setLocation} setCoords={setCoords} />
             </View>
-            <Buttons setPageNum={setPageNum} pageNum={pageNum}/>
+            <ButtonNavigation/>
           </ScreenLayout>
         );
       case 5:
@@ -121,7 +125,7 @@ const WizardPages = ({ navigation }: Props) => {
             <Title text="How long is it available?" />
             <Text style={styles.secondHeader}>Start Time:</Text>
             <CustomDatePicker setTime={setStartTime} />
-            <Buttons setPageNum={setPageNum} pageNum={pageNum}/>
+            <ButtonNavigation/>
           </ScreenLayout>
         );
       case 6:
@@ -130,7 +134,7 @@ const WizardPages = ({ navigation }: Props) => {
             <Title text="How long is it available?" />
             <Text style={styles.secondHeader}>End Time:</Text>
             <CustomDatePicker setTime={setEndTime} />
-            <Buttons setPageNum={setPageNum} pageNum={pageNum}/>
+            <ButtonNavigation/>
           </ScreenLayout>
         );
       case 7:
@@ -154,7 +158,7 @@ const WizardPages = ({ navigation }: Props) => {
               />
             </ScrollView>
 
-            <Buttons setPageNum={setPageNum} pageNum={pageNum}/>
+            <ButtonNavigation/>
           </ScreenLayout>
         );
       case 8:
@@ -165,7 +169,7 @@ const WizardPages = ({ navigation }: Props) => {
               ? <Image source={{ uri: uploadedImage }} style={styles.imgStyle} />
               : <Image source={{ uri: samplePic }} style={styles.imgStyle} />}
             <MyButton name="pluscircleo" cb={() => takePicture(setUploadedImage)} />
-            <Buttons setPageNum={setPageNum} pageNum={pageNum}/>
+            <ButtonNavigation/>
           </ScreenLayout>
         );
       case 9:

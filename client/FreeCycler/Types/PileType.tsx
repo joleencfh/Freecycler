@@ -12,5 +12,5 @@ export type PileType = {
   whatsLeft: number;
   description: string;
   image: string;
-  updates: UpdateType[];
+  updates?: UpdateType[] | null;
 }
